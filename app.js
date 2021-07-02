@@ -24,7 +24,11 @@ app.get('/search', (req, res) => {
   const restaurants = restaurantList.results.filter((restaurant) => {
     return restaurant.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()) || restaurant.category.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
   })
-  res.render('index', { restaurants: restaurants, keyword: keyword, category: category })
+  if (restaurants.length === 0) {
+    res.render('find_no_result',{ keyword: keyword, category:category })
+  } else {
+    res.render('index', { restaurants: restaurants, keyword: keyword, category: category })
+  }
 })
 
 app.get('/restaurants/:restaurant_id', (req, res) => {
