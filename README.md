@@ -33,4 +33,7 @@ nodemon app.js
 nodemon app.js
 ```
 當 Terminal 出現以下文字表示成功連結本地伺服器
-        Express is listening on localhost:3000
+```
+Express is listening on localhost:3000
+```
+6. 在任一瀏覽器中輸入 http://localhost:3000 開始使用本專案
