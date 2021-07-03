@@ -36,3 +36,4 @@ nodemon app.js
 ```
 Express is listening on localhost:3000
 ```
+6. 在任一瀏覽器中輸入 http://localhost:3000 開始使用本專案
