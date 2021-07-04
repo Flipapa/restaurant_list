@@ -5,10 +5,9 @@ const exphbs = require('express-handlebars')
 const restaurantList = require('./restaurant.json')
 
 // 列出不重複分類
-const allCategory = []
+const categories = new Set()
 restaurantList.results.forEach(restaurant =>
-  allCategory.push(restaurant.category))
-const category = [...(new Set(allCategory))]
+  categories.add(restaurant.category))
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
@@ -16,7 +15,7 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  res.render('index', { restaurants: restaurantList.results, category: category })
+  res.render('index', { restaurants: restaurantList.results, category: categories })
 })
 
 app.get('/search', (req, res) => {
@@ -28,9 +27,9 @@ app.get('/search', (req, res) => {
     return restaurant.rating > 4.5
   })
   if (restaurants.length === 0) {
-    res.render('find_no_result',{ keyword: keyword, category:category, recommends:recRestaurants })
+    res.render('find_no_result',{ keyword: keyword, category:categories, recommends:recRestaurants })
   } else {
-    res.render('index', { restaurants: restaurants, keyword: keyword, category: category })
+    res.render('index', { restaurants: restaurants, keyword: keyword, category: categories })
   }
 })
 
