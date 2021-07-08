@@ -4,6 +4,20 @@ const port = 3000
 const exphbs = require('express-handlebars')
 const restaurantList = require('./restaurant.json')
 
+const mongoose = require('mongoose')
+mongoose.connect('mongodb://localhost/restaurant_list', { useNewUrlParser: true, useUnifiedTopology: true })
+
+// 取得資料連線狀態
+const db = mongoose.connection
+
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
+
 // 列出不重複分類
 const categories = new Set()
 restaurantList.results.forEach(restaurant =>
