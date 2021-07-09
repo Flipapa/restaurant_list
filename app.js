@@ -29,6 +29,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
   Restaurant.find()
@@ -63,6 +64,34 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
   return Restaurant.findById(id)
     .lean()
     .then((restaurant) => res.render('show', { restaurant }))
+    .catch(error => console.log(error))
+})
+
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  return Restaurant.findById(id)
+    .lean()
+    .then((restaurant) => res.render('edit', { restaurant, category: categories }))
+    .catch(error => console.log(error))
+})
+
+app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  const editData = req.body
+  return Restaurant.findById(id)
+    .then(restaurant => {
+      restaurant.name = editData.name
+      restaurant.name_en = editData.name_en
+      restaurant.category = editData.category
+      restaurant.image = editData.image
+      restaurant.location = editData.location
+      restaurant.phone = editData.phone
+      restaurant.google_map = editData.google_map
+      restaurant.rating = editData.rating
+      restaurant.description = editData.description
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
 
