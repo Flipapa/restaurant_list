@@ -59,11 +59,33 @@ app.get('/search', (req, res) => {
     .catch(error => console.log(error))
 })
 
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new', { category: categories})
+})
+
+app.post('/restaurants', (req, res) => {
+  const inputData = req.body
+  
+  return Restaurant.create({
+    name: inputData.name,
+    name_en: inputData.name_en,
+    category: inputData.category,
+    image: inputData.image,
+    location: inputData.location,
+    phone: inputData.phone,
+    google_map: inputData.google_map,
+    rating: inputData.rating,
+    description: inputData.description
+  })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 app.get('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   return Restaurant.findById(id)
     .lean()
-    .then((restaurant) => res.render('show', { restaurant }))
+    .then((restaurant) => res.render('detail', { restaurant }))
     .catch(error => console.log(error))
 })
 
