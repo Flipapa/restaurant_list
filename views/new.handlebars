@@ -1,6 +1,6 @@
 <h1 class="mb-1 restaurant-show-title">新增餐廳</h1>
 <div class="container mb-5">
-  <form action="/restaurants" method="POST">
+  <form action="/restaurants" method="POST" class="needs-validation" novalidate>
     <div class="form-row mb-3">
       <div class="form-group col-md-6">
         <label for="name"><i class="fas fa-home pr-2"></i>餐廳名稱</label>
@@ -23,7 +23,7 @@
       </div>
       <div class="form-group col-6 col-md-4">
         <label for="phone"><i class="fas fa-mobile-alt pr-2"></i>電話</label>
-        <input type="text" class="form-control" name="phone" id="phone" placeholder="請輸入餐廳電話" required>
+        <input type="tel" class="form-control" name="phone" id="phone" placeholder="請輸入餐廳電話" required>
         <div class="invalid-feedback">此為必填欄位!</div>
       </div>
       <div class="form-group col-6 col-md-4">
@@ -39,12 +39,10 @@
       </div>
       <div class="form-group col-12">
         <label for="google_map"><i class="fas fa-map-marker-alt pr-2"></i>Google Map</label>
-        <input type="text" class="form-control" name="google_map" id="google_map" placeholder="請貼上餐廳的google-map網址"
-          required>
-        <div class="invalid-feedback">此為必填欄位!</div>
+        <input type="url" class="form-control" name="google_map" id="google_map" placeholder="請貼上餐廳的google-map網址">
       </div>
       <div class="form-group col-12">
-        <label for="image"><i class="fas fa-image pr-2"></i>照片</label>
+        <label for="image"><i class="fas fa-image pr-2"></i>照片url</label>
         <input type="text" class="form-control" name="image" id="image" placeholder="請貼上一張餐廳照片網址">
       </div>
       <div class="form-group col-12">
