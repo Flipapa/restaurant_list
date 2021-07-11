@@ -65,15 +65,22 @@ app.get('/restaurants/new', (req, res) => {
 
 app.post('/restaurants', (req, res) => {
   const inputData = req.body
-  
+  let google_map = inputData.google_map
+  if (google_map === '') {
+    google_map = `https://www.google.com.tw/maps/search/${inputData.name}`
+  }
+  let image = inputData.image
+  if (image ==='') {
+    image ='https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg?resize=750px:*'
+  }
   return Restaurant.create({
     name: inputData.name,
     name_en: inputData.name_en,
     category: inputData.category,
-    image: inputData.image,
+    image: image,
     location: inputData.location,
     phone: inputData.phone,
-    google_map: inputData.google_map,
+    google_map: google_map,
     rating: inputData.rating,
     description: inputData.description
   })
@@ -100,15 +107,23 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
 app.post('/restaurants/:restaurant_id/edit', (req, res) => {
   const id = req.params.restaurant_id
   const editData = req.body
+  let editGoogle_map = req.body.google_map
+  if (editGoogle_map === '') {
+    editGoogle_map = `https://www.google.com.tw/maps/search/${editData.name}`
+  }
+  let image = editData.image
+  if (image === '') {
+    image = 'https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg?resize=750px:*'
+  }
   return Restaurant.findById(id)
     .then(restaurant => {
       restaurant.name = editData.name
       restaurant.name_en = editData.name_en
       restaurant.category = editData.category
-      restaurant.image = editData.image
+      restaurant.image = image
       restaurant.location = editData.location
       restaurant.phone = editData.phone
-      restaurant.google_map = editData.google_map
+      restaurant.google_map = editGoogle_map
       restaurant.rating = editData.rating
       restaurant.description = editData.description
       return restaurant.save()
