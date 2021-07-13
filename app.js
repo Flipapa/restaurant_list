@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 const exphbs = require('express-handlebars')
+const methodOverride = require('method-override')
 const Restaurant = require('./models/restaurant')
 
 const mongoose = require('mongoose')
@@ -22,7 +23,7 @@ db.once('open', () => {
 const categories = new Set()
 Restaurant.find().lean().then((restaurants) => {
   restaurants.forEach(restaurant =>
-  categories.add(restaurant.category))
+    categories.add(restaurant.category))
 })
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
@@ -30,6 +31,7 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
   Restaurant.find()
@@ -60,7 +62,7 @@ app.get('/search', (req, res) => {
 })
 
 app.get('/restaurants/new', (req, res) => {
-  return res.render('new', { category: categories})
+  return res.render('new', { category: categories })
 })
 
 app.post('/restaurants', (req, res) => {
@@ -70,8 +72,8 @@ app.post('/restaurants', (req, res) => {
     google_map = `https://www.google.com.tw/maps/search/${inputData.name}`
   }
   let image = inputData.image
-  if (image ==='') {
-    image ='https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg?resize=750px:*'
+  if (image === '') {
+    image = 'https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg?resize=750px:*'
   }
   return Restaurant.create({
     name: inputData.name,
@@ -104,7 +106,7 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+app.put('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   const editData = req.body
   let editGoogle_map = req.body.google_map
@@ -132,7 +134,7 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+app.delete('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   return Restaurant.findById(id)
     .then(restaurant => restaurant.remove())
