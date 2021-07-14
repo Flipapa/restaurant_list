@@ -12,21 +12,20 @@ Restaurant.find().lean().then((restaurants) => {
 
 router.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim()
-
+  let recRestaurants
   Restaurant.find()
     .lean()
     .then((restaurants) => {
       restaurantSearch = restaurants.filter((restaurant) => {
         return restaurant.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()) || restaurant.category.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
       })
-      recRestaurants = restaurants.filter((restaurant) => {
-        return restaurant.rating > 4.5
-      })
+      
       if (restaurantSearch.length === 0) {
-        res.render('find_no_result', { keyword, category: categories, recommends: recRestaurants })
-      } else {
-        res.render('index', { restaurants: restaurantSearch, keyword, category: categories })
+        recRestaurants = restaurants.filter((restaurant) => {
+          return restaurant.rating > 4.5
+        })
       }
+      res.render('index', { restaurants: restaurantSearch, keyword, category: categories, recommends: recRestaurants })
     })
     .catch(error => console.log(error))
 })
@@ -36,26 +35,16 @@ router.get('/new', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  const inputData = req.body
-  let google_map = inputData.google_map
+  const { name, name_en, category, location, phone, rating, description } = req.body
+  let google_map = req.body.google_map
   if (google_map === '') {
-    google_map = `https://www.google.com.tw/maps/search/${inputData.name}`
+    google_map = `https://www.google.com.tw/maps/search/${name}`
   }
-  let image = inputData.image
+  let image = req.body.image
   if (image === '') {
     image = 'https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg?resize=750px:*'
   }
-  return Restaurant.create({
-    name: inputData.name,
-    name_en: inputData.name_en,
-    category: inputData.category,
-    image: image,
-    location: inputData.location,
-    phone: inputData.phone,
-    google_map: google_map,
-    rating: inputData.rating,
-    description: inputData.description
-  })
+  return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description })
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })

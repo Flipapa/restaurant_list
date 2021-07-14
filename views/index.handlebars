@@ -8,6 +8,9 @@
           <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
             value="{{keyword}}" aria-describedby="search-button">
           <div class="input-group-append">
+            {{#if keyword}}
+            <a href="/" class="btn btn-warning"><i class="fas fa-redo-alt mr-1"></i>清除</a>
+            {{/if}}
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
           </div>
         </div>
@@ -56,6 +59,46 @@
     {{/each}}
 
   </div>
+  {{#if recommends}}
+    <div class="row">
+      <div class="col-md-10 col-12 mx-auto">
+        <div class="text-center" style="min-height: 200px;">
+          <h1><i class="fas fa-sad-tear lg"></i></h1>
+          <h6 class="mt-3">沒有符合"{{keyword}}"的項目，請嘗試其他搜尋內容</h6>
+          <h6 class="mt-3">Hmmm, we can't find anything for "{{keyword}}".<br>Please give another try!</h6>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <h5 class="col">或者可以嘗試以下評分最高的餐廳：</h5>
+    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
+    
+      {{#each recommends}}
+      <a href="/restaurants/{{this._id}}" class="col mb-4 text-secondary">
+        <div class="card h-100">
+          <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+          <div class="card-body p-3">
+            <h6 class="card-title mb-1">{{this.name}}</h6>
+    
+            <div class="restaurant-category mb-1">
+              <i class="fas fa-utensils pr-2"></i> {{this.category}}
+            </div>
+    
+            <span class="badge badge-pill badge-danger font-weight-normal">
+              {{this.rating}}
+              <i class="fas fa-star fa-xs"></i>
+            </span>
+    
+          </div>
+        </div>
+      </a>
+      {{/each}}
+    
+    
+    
+    </div>
+  {{/if}}
 </div>
 {{#each restaurants}}
 {{!-- Modal --}}
