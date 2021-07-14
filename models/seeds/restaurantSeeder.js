@@ -1,19 +1,9 @@
-const mongoose = require('mongoose')
 const Restaurant = require('../restaurant')
 const rawData = require('./restaurant.json')
 const restaurantList = rawData.results
-
-mongoose.connect('mongodb://localhost/restaurant_list', { useNewUrlParser: true, useUnifiedTopology: true })
-
-// 取得資料連線狀態
-const db = mongoose.connection
-
-db.on('error', () => {
-  console.log('mongodb error!')
-})
+require('../../config/mongoose')
 
 db.once('open', () => {
-  console.log('mongodb connected!')
   console.log('processing seeder!')
   for (const restaurant of restaurantList) {
     Restaurant.create({
