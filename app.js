@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
+const { ifEqual, ifNotEqual } = require('./tools/handlebarshelpers')
 const port = 3000
 
 const routes = require('./routes')
@@ -8,7 +9,7 @@ require('./config/mongoose')
 
 const app = express()
 
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.engine('handlebars', exphbs({ defaultLayout: 'main', helpers: { ifEqual, ifNotEqual } }))
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))

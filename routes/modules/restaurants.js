@@ -2,19 +2,23 @@ const express = require('express')
 const router = express.Router()
 
 const Restaurant = require('../../models/restaurant')
+const sortList = require('../../config/sortData.json')
 
 // 列出不重複分類
 const categories = new Set()
-Restaurant.find().lean().then((restaurants) => {
-  restaurants.forEach(restaurant =>
-    categories.add(restaurant.category))
-})
+Restaurant.find()
+  .lean()
+  .then(restaurants => restaurants.forEach(restaurant => {
+    categories.add(restaurant.category)
+  }))
 
 router.get('/search', (req, res) => {
-  const keyword = req.query.keyword.trim()
+  const { keyword, sortOption } = req.query
   let recRestaurants
+
   Restaurant.find()
     .lean()
+    .sort(sortOption === "" ? "" : sortList[sortOption].data)
     .then((restaurants) => {
       restaurantSearch = restaurants.filter((restaurant) => {
         return restaurant.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()) || restaurant.category.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
@@ -25,7 +29,7 @@ router.get('/search', (req, res) => {
           return restaurant.rating > 4.5
         })
       }
-      res.render('index', { restaurants: restaurantSearch, keyword, category: categories, recommends: recRestaurants })
+      res.render('index', { restaurants: restaurantSearch, keyword, sortList, sortOption, category: categories, recommends: recRestaurants })
     })
     .catch(error => console.log(error))
 })

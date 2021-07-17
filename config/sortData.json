@@ -1,0 +1,32 @@
+{
+  "dateAsc": {
+    "value": "dateAsc",
+    "option": "舊 -> 新",
+    "data": { "_id": "asc" }
+  },
+  "dateDesc": {
+    "value": "dateDesc",
+    "option": "新 -> 舊",
+    "data": { "_id": "desc" }
+  },
+  "nameAsc": {
+    "value": "nameAsc",
+    "option": "A -> Z",
+    "data": { "name": "asc" }
+  },
+  "nameDesc": {
+    "value": "nameDesc",
+    "option": "Z -> A",
+    "data": { "name": "desc" }
+  },
+  "rating": {
+    "value": "rating",
+    "option": "最高評分",
+    "data": { "rating": "desc" }
+  },
+  "location": {
+    "value": "location",
+    "option": "地區",
+    "data": { "location": "asc" }
+  }
+}
