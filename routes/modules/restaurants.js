@@ -14,22 +14,19 @@ Restaurant.find()
 
 router.get('/search', (req, res) => {
   const { keyword, sortOption } = req.query
+  const sKeyword = new RegExp(keyword.trim(), 'i')
   let recRestaurants
 
-  Restaurant.find()
+  Restaurant.find({ $or: [{ name: sKeyword }, { name_en: sKeyword }, { category: sKeyword }] })
     .lean()
     .sort(sortOption === "" ? "" : sortList[sortOption].data)
     .then((restaurants) => {
-      restaurantSearch = restaurants.filter((restaurant) => {
-        return restaurant.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()) || restaurant.category.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
-      })
-      
-      if (restaurantSearch.length === 0) {
+      if (restaurants.length === 0) {
         recRestaurants = restaurants.filter((restaurant) => {
           return restaurant.rating > 4.5
         })
       }
-      res.render('index', { restaurants: restaurantSearch, keyword, sortList, sortOption, category: categories, recommends: recRestaurants })
+      res.render('index', { restaurants, keyword, sortList, sortOption, category: categories, recommends: recRestaurants })
     })
     .catch(error => console.log(error))
 })
