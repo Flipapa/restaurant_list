@@ -6,6 +6,7 @@
 
 ## 功能
 - 使用者可以瀏覽全部餐廳
+- 使用者可以根據喜好來調整餐廳排序方式
 - 使用者可以點擊**餐廳照片**或**Detail按鈕**來觀看餐廳的詳細內容
 - 使用者可以用**餐廳名稱**或**類別**來搜尋列表中的餐廳
 - 搜尋列表下列出可供點擊的類別，可以快速跳轉至該搜尋內容
@@ -16,7 +17,7 @@
 
 
 ## 畫面瀏覽
-![image](https://github.com/Flipapa/restaurant_list/blob/main/2-3%20S4%20A6.png)
+![image](https://github.com/Flipapa/restaurant_list/blob/main/2-3%20S4%20A8.png)
 
 ## 環境
 - Node.js v10.15.0
